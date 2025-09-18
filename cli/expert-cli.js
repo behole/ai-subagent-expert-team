@@ -237,7 +237,7 @@ async function main() {
       break;
 
     case 'consult':
-      const expert = args[1];
+      const expert = process.argv[3];
       if (!expert) {
         console.error(colorize('❌ Error: Expert name is required for consultation', 'red'));
         console.log('Example: expert-cli consult @colorTheorist --content "Design advice"');
