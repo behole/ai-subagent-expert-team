@@ -1,0 +1,30 @@
+name: ai-subagent-expert-team
+services:
+- name: api
+  source_dir: /
+  github:
+    repo: your-username/AI_SubAgent_Project
+    branch: main
+  run_command: npm run start:prod
+  build_command: npm run build:prod
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: "8080"
+  - key: API_KEY
+    value: your-secure-api-key
+    type: SECRET
+  - key: LOG_LEVEL
+    value: info
+  - key: RATE_LIMIT_MAX_REQUESTS
+    value: "100"
+  - key: RATE_LIMIT_WINDOW_MS
+    value: "900000"
+  health_check:
+    http_path: /health

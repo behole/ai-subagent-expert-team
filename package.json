@@ -1,0 +1,54 @@
+{
+  "name": "ai-subagent-expert-team",
+  "version": "1.0.0",
+  "description": "An orchestrated team of 12 AI SubAgents functioning as expert consultants for creative work analysis",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:prod": "npm run clean && npm run build",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:prod": "NODE_ENV=test npm test",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rm -rf dist/",
+    "deploy": "npm run build:prod && npm run start:prod",
+    "docker:build": "docker build -t ai-subagent-expert-team .",
+    "docker:run": "docker run -p 3000:3000 ai-subagent-expert-team"
+  },
+  "keywords": [
+    "ai",
+    "expert-system",
+    "creative-analysis",
+    "orchestration",
+    "typescript"
+  ],
+  "author": "AI SubAgent Project",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "dotenv": "^16.3.1",
+    "zod": "^3.22.4",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/express": "^4.17.17",
+    "@types/cors": "^2.8.13",
+    "@types/compression": "^1.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.49.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
