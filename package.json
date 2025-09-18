@@ -17,7 +17,10 @@
     "clean": "rm -rf dist/",
     "deploy": "npm run build:prod && npm run start:prod",
     "docker:build": "docker build -t ai-subagent-expert-team .",
-    "docker:run": "docker run -p 3000:3000 ai-subagent-expert-team"
+    "docker:run": "docker run -p 3000:3000 ai-subagent-expert-team",
+    "expert": "node cli/expert-cli.js",
+    "quick-expert": "node cli/quick-expert.js",
+    "gui": "npm run build && npm run start:prod"
   },
   "keywords": [
     "ai",

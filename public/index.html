@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SubAgent Expert Team - Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .input-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .expert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .expert-btn {
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .expert-btn:hover {
+            border-color: #4f46e5;
+            background: #f0f9ff;
+        }
+
+        .expert-btn.selected {
+            border-color: #4f46e5;
+            background: #4f46e5;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3730a3;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .results-section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
+        }
+
+        .analysis-result {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .analysis-header {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .expert-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .expert-role {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .analysis-content {
+            padding: 1rem;
+        }
+
+        .confidence {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .confidence.high {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .confidence.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .confidence.low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .recommendations {
+            margin-top: 1rem;
+        }
+
+        .recommendations h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation {
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid #4f46e5;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .expert-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI SubAgent Expert Team</h1>
+            <p>Get professional insights from 12 specialized AI experts</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>Project Details</h2>
+
+                <div class="form-group">
+                    <label for="projectType">Project Type</label>
+                    <select id="projectType">
+                        <option value="website">Website Design</option>
+                        <option value="brand">Brand Identity</option>
+                        <option value="marketing">Marketing Campaign</option>
+                        <option value="app">App Development</option>
+                        <option value="design">General Design</option>
+                        <option value="copy">Copywriting</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectContent">Project Description</label>
+                    <textarea id="projectContent" placeholder="Describe your project, goals, and what you need help with..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="requirements">Requirements (Optional)</label>
+                    <textarea id="requirements" placeholder="Specific requirements, constraints, or goals..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="context">Project Context (Optional)</label>
+                    <input type="text" id="context" placeholder="Company type, industry, background...">
+                </div>
+
+                <div class="form-group">
+                    <label for="audience">Target Audience (Optional)</label>
+                    <input type="text" id="audience" placeholder="Who is this for?">
+                </div>
+
+                <div class="form-group">
+                    <label>Specific Experts (Optional)</label>
+                    <div class="expert-grid" id="expertGrid"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="analyzeProject()">🎯 Analyze Project</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">🗑️ Clear</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>Analysis Results</h2>
+                <div id="results">
+                    <div class="loading">
+                        👋 Welcome! Fill out the project details and click "Analyze Project" to get started.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let experts = [];
+        let selectedExperts = new Set();
+
+        // Load available experts on page load
+        async function loadExperts() {
+            try {
+                const response = await fetch(`${API_BASE}/api/experts`);
+                const data = await response.json();
+                experts = data.experts;
+                renderExpertGrid();
+            } catch (error) {
+                console.error('Failed to load experts:', error);
+            }
+        }
+
+        function renderExpertGrid() {
+            const grid = document.getElementById('expertGrid');
+            grid.innerHTML = '';
+
+            experts.forEach(expert => {
+                if (!expert.implemented) return;
+
+                const btn = document.createElement('div');
+                btn.className = 'expert-btn';
+                btn.textContent = expert.name.split(' ').map(w => w[0]).join('');
+                btn.title = `${expert.name} - ${expert.role}`;
+                btn.onclick = () => toggleExpert(expert.name, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function toggleExpert(expertName, btn) {
+            const command = `@${expertName.toLowerCase().replace(/\s+/g, '')}`;
+
+            if (selectedExperts.has(command)) {
+                selectedExperts.delete(command);
+                btn.classList.remove('selected');
+            } else {
+                selectedExperts.add(command);
+                btn.classList.add('selected');
+            }
+        }
+
+        async function analyzeProject() {
+            const projectData = {
+                type: document.getElementById('projectType').value,
+                content: document.getElementById('projectContent').value,
+                requirements: document.getElementById('requirements').value,
+                context: document.getElementById('context').value,
+                targetAudience: document.getElementById('audience').value
+            };
+
+            if (!projectData.content.trim()) {
+                alert('Please provide a project description');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">🔍 Analyzing your project...</div>';
+
+            try {
+                let result;
+
+                if (selectedExperts.size > 0) {
+                    // Consult specific experts
+                    const analyses = [];
+                    for (const expertCommand of selectedExperts) {
+                        const response = await fetch(`${API_BASE}/api/consult/${expertCommand}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(projectData)
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            analyses.push(data.result);
+                        }
+                    }
+                    result = { analyses };
+                } else {
+                    // Auto-analyze with all relevant experts
+                    const response = await fetch(`${API_BASE}/api/analyze`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(projectData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    result = data.result;
+                }
+
+                renderResults(result);
+            } catch (error) {
+                console.error('Analysis failed:', error);
+                resultsDiv.innerHTML = `<div class="loading">❌ Analysis failed: ${error.message}</div>`;
+            }
+        }
+
+        function renderResults(result) {
+            const resultsDiv = document.getElementById('results');
+
+            if (!result.analyses || result.analyses.length === 0) {
+                resultsDiv.innerHTML = '<div class="loading">❌ No analysis results received</div>';
+                return;
+            }
+
+            let html = '';
+            result.analyses.forEach(analysis => {
+                html += `
+                    <div class="analysis-result">
+                        <div class="analysis-header">
+                            <div class="expert-name">${analysis.expertName}</div>
+                            <div class="expert-role">${analysis.expertRole}</div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="confidence ${analysis.confidence || 'medium'}">
+                                Confidence: ${(analysis.confidence || 'medium').toUpperCase()}
+                            </div>
+                            <p><strong>Assessment:</strong> ${analysis.assessment}</p>
+                            ${analysis.insights ? `<p><strong>Insights:</strong> ${analysis.insights}</p>` : ''}
+                            ${analysis.recommendations && analysis.recommendations.length > 0 ? `
+                                <div class="recommendations">
+                                    <h4>Recommendations:</h4>
+                                    ${analysis.recommendations.map(rec => `
+                                        <div class="recommendation">
+                                            <strong>${rec.title || 'Recommendation'}:</strong> ${rec.description || rec}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function clearForm() {
+            document.getElementById('projectContent').value = '';
+            document.getElementById('requirements').value = '';
+            document.getElementById('context').value = '';
+            document.getElementById('audience').value = '';
+            document.getElementById('projectType').selectedIndex = 0;
+
+            selectedExperts.clear();
+            document.querySelectorAll('.expert-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            document.getElementById('results').innerHTML = `
+                <div class="loading">
+                    👋 Welcome! Fill out the project details and click "Analyze Project" to get started.
+                </div>
+            `;
+        }
+
+        // Initialize on page load
+        loadExperts();
+    </script>
+</body>
+</html>

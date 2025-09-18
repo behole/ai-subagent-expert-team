@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import path from 'path';
 import { config } from 'dotenv';
 import { AISubAgentExpertTeam } from './index';
 import { ProjectSubmission } from './types';
@@ -50,6 +51,9 @@ app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// Static files
+app.use(express.static(path.join(__dirname, '../public')));
+
 // Rate limiting
 app.use(rateLimiter);
 
@@ -61,6 +65,11 @@ app.use((req, res, next) => {
     timestamp: new Date().toISOString(),
   });
   next();
+});
+
+// Root route - serve the GUI
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // Health check endpoint
